@@ -37,7 +37,7 @@ db.session.commit()
 '''
 
 '''
-#这里是修改密码
+# 
 users = User.query.all()
 username_table = {u.username: u for u in users} 
 user = username_table.get('gom', None) 
@@ -74,8 +74,7 @@ from flask_restless import ProcessingException
 def get_single_preprocessor(resource_id=None, **kw):
     """Accepts a single argument, `instance_id`, the primary key of the
     instance of the model to get.
-    只能同过API/1...来访问单个内容
-    另：使用手机做用户名登录好处就是不用再来做不要的查询了。直接判断current_user == instance_id 即可。
+ 
     """
     users = User.query.all()
     username_table = {u.username: u for u in users} 
@@ -111,7 +110,7 @@ def post_processors_func_get_many(instance_id=None, **kwargs):
 #                                       PUT_SINGLE=[get_single_preprocessor],
 #                                       POST=[auth_admin_func]),
 #                    postprocessors=dict(GET_MANY=[post_processors_func_get_many]),)
-# 此处控制不返回用户密码### include_columns=['id', 'username','password', 'role', 'userrole'] ##########################
+#  nclude_columns=['id', 'username','password', 'role', 'userrole'] ##########################
 
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 preprocessors = {'GET_COLLECTION': [auth_admin_func], 'GET_RESOURCE': [get_single_preprocessor]}
