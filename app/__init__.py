@@ -8,7 +8,7 @@ from flask import Flask, request, jsonify
 import flask_sqlalchemy
 # from flask.ext.sqlalchemy import SQLAlchemy
 import flask_restless
-
+from flask_api import FlaskAPI
 from flask_jwt_extended import (
     JWTManager, jwt_required, get_jwt_identity,
     create_access_token, create_refresh_token,
@@ -16,16 +16,19 @@ from flask_jwt_extended import (
 )
 from werkzeug.security import safe_str_cmp, generate_password_hash, check_password_hash
 from instance.config import app_config
+from flask_sqlalchemy import SQLAlchemy
+
+#db = SQLAlchemy()
 
 
 def create_app(config_name):
+    app = FlaskAPI(__name__, instance_relative_config=True)
 
-    app = Flask(__name__)
-    app.secret_key = 'super_secret_xyzXYZ_xyzXYZ@xyzXYZ_123'
-    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = 'all'
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=10)
-    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(days=100)
-    jwt = JWTManager(app)
+    # app.secret_key = 'super_secret_xyzXYZ_xyzXYZ@xyzXYZ_123'
+    # app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = 'all'
+    # app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=10)
+    # app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(days=100)
+
 
     #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@127.0.0.1:3306/app?charset=utf8'
     # 最新版本已经移除？app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
@@ -33,7 +36,12 @@ def create_app(config_name):
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.secret_key = 'super_secret_xyzXYZ_xyzXYZ@xyzXYZ_123'
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = 'all'
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=10)
+    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(days=100)
+    #app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@127.0.0.1:3306/apptest?charset=utf8'
 
     return app
 
-db = flask_sqlalchemy.SQLAlchemy(create_app, use_native_unicode='utf8')
+db = flask_sqlalchemy.SQLAlchemy(create_app('development'), use_native_unicode='utf8')

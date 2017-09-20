@@ -1,31 +1,27 @@
 # encoding: utf-8
-import os
-from app import create_app
-
-#import sys
-#reload(sys)
-#sys.setdefaultencoding('utf8')
-import flask.ext.restless
-from app import db,User,Role,tags
-import io
-import sys
-import datetime
-import pymysql
-from flask import Flask, request, jsonify
-import flask_sqlalchemy
 import flask_restless
+from flask import request, jsonify
 from flask_jwt_extended import (
     JWTManager, jwt_required, get_jwt_identity,
     create_access_token, create_refresh_token,
     jwt_refresh_token_required, get_raw_jwt
 )
-from werkzeug.security import safe_str_cmp,generate_password_hash,check_password_hash
-config_name = "development"
-app = create_app(config_name)
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from app import create_app
+from models import db,User,Role,tags
+
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf8')
+# from app import db,User,Role,tags
+
+# config_name = "development"
+app = create_app('development')
+jwt = JWTManager(app)
 # Create the Flask application and the Flask-SQLAlchemy object.
 ################################################################################################################
-'''
+
 db.drop_all()
 db.create_all()
 
@@ -37,7 +33,7 @@ user_tim = User(username=u'tim',password=u'abc',role=role_admin,userrole=1)
 user_sam = User(username=u'sam',password=u'abc',role=role_admin,userrole=4)
 user_gas = User(username=u'gas',password=u'打开',role=role_admin,userrole=5)
 db.session.commit()
-'''
+
 
 '''
 #这里是修改密码
