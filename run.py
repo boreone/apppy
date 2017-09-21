@@ -8,8 +8,8 @@ from flask_jwt_extended import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import create_app
-from models import db,User,Role,tags
+from app import app
+from app.models import *
 
 # import sys
 # reload(sys)
@@ -17,23 +17,23 @@ from models import db,User,Role,tags
 # from app import db,User,Role,tags
 
 # config_name = "development"
-app = create_app('development')
+
 jwt = JWTManager(app)
 # Create the Flask application and the Flask-SQLAlchemy object.
 ################################################################################################################
-
-db.drop_all()
-db.create_all()
-
-role_admin = Role(name=u'Admin')
-user_tom = User(username=u'tom',password=generate_password_hash('abc'),role=role_admin,userrole=1)
-db.session.add(user_tom )
-user_jim = User(username=u'jim',password=generate_password_hash('abc'),role=role_admin,userrole=1)
-user_tim = User(username=u'tim',password=u'abc',role=role_admin,userrole=1)
-user_sam = User(username=u'sam',password=u'abc',role=role_admin,userrole=4)
-user_gas = User(username=u'gas',password=u'打开',role=role_admin,userrole=5)
-db.session.commit()
-
+#
+# db.drop_all()
+# db.create_all()
+#
+# role_admin = Role(name=u'Admin')
+# user_tom = User(username=u'tom',password=generate_password_hash('abc'),role=role_admin,userrole=1)
+# db.session.add(user_tom )
+# user_jim = User(username=u'jim',password=generate_password_hash('abc'),role=role_admin,userrole=1)
+# user_tim = User(username=u'tim',password=u'abc',role=role_admin,userrole=1)
+# user_sam = User(username=u'sam',password=u'abc',role=role_admin,userrole=4)
+# user_gas = User(username=u'gas',password=u'打开',role=role_admin,userrole=5)
+# db.session.commit()
+#######################################################################################################
 
 '''
 #这里是修改密码
@@ -123,10 +123,11 @@ manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 preprocessors = {'GET_COLLECTION': [auth_admin_func], 'GET_RESOURCE': [get_single_preprocessor]}
 manager.create_api(User, page_size=2,
                    exclude=['password'],
+                   preprocessors=preprocessors,
                    collection_name='users',
                    methods=['GET', 'POST', 'PUT', 'DELETE'])
 manager.create_api(Role, collection_name='roles', methods=['GET', 'POST', 'PUT', 'DELETE'])
 # http://127.0.0.1:1000/api/rolessss/1/users
 
 if __name__ == '__main__':
-    app.run(port=2010) 
+    app.run(port=2020)

@@ -10,8 +10,12 @@ class Config(object):
 class DevelopmentConfig(Config):
     """Configurations for Development."""
     TESTING = True
+    SECRET_KEY = 'a9eec0e0-23b7-4788-9a92-318347b9a39f'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@127.0.0.1:3306/apptest?charset=utf8'
+    JWT_BLACKLIST_TOKEN_CHECKS = 'all'
+
     DEBUG = True
+
 
 class TestingConfig(Config):
     """Configurations for Testing, with a separate test database."""
