@@ -33,6 +33,17 @@ jwt = JWTManager(app)
 # user_sam = User(username=u'sam',password=u'abc',role=role_admin,userrole=4)
 # user_gas = User(username=u'gas',password=u'打开',role=role_admin,userrole=5)
 # db.session.commit()
+
+# user_gas = User(username=u'gas',password=u'打开',role=role_admin,userrole=5)
+#######################################################################################################
+# user_gas = User(id=515,username=u'ga1see',password=u'打开',role_id=1,userrole=5)
+# print("11")
+# User.save(user_gas)
+
+# user_gas = User.query.filter_by(username='ga2see').first()
+# print(user_gas)
+# User.delete(user_gas)
+
 #######################################################################################################
 
 '''
@@ -76,6 +87,9 @@ def get_single_preprocessor(resource_id=None, **kw):
     只能同过API/1...来访问单个内容
     另：使用手机做用户名登录好处就是不用再来做不要的查询了。直接判断current_user == instance_id 即可。
     """
+    user_gas = User(password=u'打开打开1')
+    User.save(user_gas)
+
     users = User.query.all()
     username_table = {u.username: u for u in users}
     current_user = get_jwt_identity()
@@ -121,13 +135,13 @@ def post_processors_func_get_many(instance_id=None, **kwargs):
 
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 preprocessors = {'GET_COLLECTION': [auth_admin_func], 'GET_RESOURCE': [get_single_preprocessor]}
-manager.create_api(User, page_size=2,
+manager.create_api(User, page_size=50,
                    exclude=['password'],
-                   preprocessors=preprocessors,
+
                    collection_name='users',
                    methods=['GET', 'POST', 'PUT', 'DELETE'])
 manager.create_api(Role, collection_name='roles', methods=['GET', 'POST', 'PUT', 'DELETE'])
 # http://127.0.0.1:1000/api/rolessss/1/users
 
 if __name__ == '__main__':
-    app.run(port=2020)
+    app.run(port=2020,debug=False)

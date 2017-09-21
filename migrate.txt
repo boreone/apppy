@@ -1,7 +1,9 @@
 cd \python\app
 python migrate_models.py db init
 
+python manage.py db init
+python manage.py db migrate -m "add_1"
+python manage.py db upgrade
 
-python migrate_models.py db migrate -m "add_"
 
 python migrate_models.py db upgrade

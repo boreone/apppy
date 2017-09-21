@@ -1,6 +1,8 @@
 from app import db
 
+
 class User(db.Model):
+
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
@@ -13,6 +15,25 @@ class User(db.Model):
     def __repr__(self):
         return '%s' % self.id
 
+    def __init__(self,id,username, password,role_id,userrole):
+        """initialize with name."""
+        self.id = id
+        self.password = password
+        self.username = username
+        self.role_id = role_id
+        self.userrole = userrole
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+    #
+    # def __repr__(self):
+    #     return "<Bucketlist: {}>".format(self.name)
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -22,6 +43,7 @@ class Role(db.Model):
 
     def __repr__(self):
         return '<Role %r>' % self.name
+
 
 
 tags = db.Table('tags',
