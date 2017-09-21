@@ -7,16 +7,9 @@ from flask_jwt_extended import (
     jwt_refresh_token_required, get_raw_jwt
 )
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_restless import ProcessingException
 from app import app
 from app.models import *
-
-# import sys
-# reload(sys)
-# sys.setdefaultencoding('utf8')
-# from app import db,User,Role,tags
-
-# config_name = "development"
 
 jwt = JWTManager(app)
 # Create the Flask application and the Flask-SQLAlchemy object.
@@ -79,7 +72,7 @@ def login():
         return jsonify({'error': '错误'}), 401
 ################################################################################################################
 
-from flask_restless import ProcessingException
+
 @jwt_required
 def get_single_preprocessor(resource_id=None, **kw):
     """Accepts a single argument, `instance_id`, the primary key of the
@@ -117,22 +110,6 @@ def auth_admin_func(instance_id=None, **kwargs):
 def post_processors_func_get_many(instance_id=None, **kwargs):
     print("GET_MANY后处理.....")
 ################################################################################################################
-# manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
-# manager.create_api(User, methods=['GET', 'POST', 'PUT', 'DELETE'],
-#                    preprocessors=dict(GET_RESOURCE=[get_single_preprocessor],
-#                                       GET_COLLECTION=[auth_admin_func],
-#                                       PUT_SINGLE=[get_single_preprocessor],
-#                                       POST=[auth_admin_func]),
-#                    postprocessors=dict(GET_MANY=[post_processors_func_get_many]),)
-# 此处控制不返回用户密码### include_columns=['id', 'username','password', 'role', 'userrole'] ##########################
-
-
-
-
-
-
-#config_name = os.getenv('APP_SETTINGS') # config_name = "development"
-
 manager = flask_restless.APIManager(app, flask_sqlalchemy_db=db)
 preprocessors = {'GET_COLLECTION': [auth_admin_func], 'GET_RESOURCE': [get_single_preprocessor]}
 manager.create_api(User, page_size=50,
@@ -142,6 +119,5 @@ manager.create_api(User, page_size=50,
                    methods=['GET', 'POST', 'PUT', 'DELETE'])
 manager.create_api(Role, collection_name='roles', methods=['GET', 'POST', 'PUT', 'DELETE'])
 # http://127.0.0.1:1000/api/rolessss/1/users
-
 if __name__ == '__main__':
     app.run(port=2020,debug=False)
